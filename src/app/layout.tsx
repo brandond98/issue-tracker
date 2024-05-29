@@ -38,11 +38,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} max-w-7xl mx-auto`}>
-        <NavigationMenu>
+        <NavigationMenu className="bg-gray-300 min-w-full my-5 p-3 rounded-md">
           {navLinks.map((link) => (
             <NavigationMenuLink
               key={link.name}
-              className={navigationMenuTriggerStyle()}
+              className={`${navigationMenuTriggerStyle()} bg-transparent mx-3`}
               href={link.href}
               active={isActive(link.href)}
             >
