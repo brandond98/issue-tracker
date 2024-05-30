@@ -42,7 +42,7 @@ export default function RootLayout({
           {navLinks.map((link) => (
             <NavigationMenuLink
               key={link.name}
-              className={`${navigationMenuTriggerStyle()} bg-transparent mx-3`}
+              className={`${navigationMenuTriggerStyle()} bg-transparent mx-3 font-bold`}
               href={link.href}
               active={isActive(link.href)}
             >
