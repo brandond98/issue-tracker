@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { formatStatus } from "@/lib/utils";
 import { IssueStatus } from "@prisma/client";
 
 const getIssues = async () => {
@@ -36,22 +37,13 @@ const getIssues = async () => {
   }
 };
 
-const statusOptions = [
-  {
-    value: IssueStatus.TODO,
-    label: "TO DO",
-  },
-  {
-    value: IssueStatus.IN_PROGRESS,
-    label: "IN PROGRESS",
-  },
-  {
-    value: IssueStatus.DONE,
-    label: "DONE",
-  },
-];
+const statusOptions = Object.keys(IssueStatus).map((key) => ({
+  value: key,
+  label: formatStatus(key),
+}));
+
 export default async function Issues() {
-  const { TODO, IN_PROGRESS, DONE } = await getIssues();
+  const issues = await getIssues();
 
   return (
     <div>
@@ -107,24 +99,16 @@ export default async function Issues() {
         </DialogContent>
       </Dialog>
       <div className="flex">
-        <div className="w-1/3 border-r-2 p-3 min-h-screen">
-          <h1 className="font-bold text-lg mb-5 uppercase">To do</h1>
-          {TODO.map((issue: any) => (
-            <Ticket issue={issue} key={issue.id} />
-          ))}
-        </div>
-        <div className="w-1/3 border-r-2 p-3 min-h-screen">
-          <h1 className="font-bold text-lg mb-5 uppercase">In Progress</h1>
-          {IN_PROGRESS.map((issue: any) => (
-            <Ticket issue={issue} key={issue.id} />
-          ))}
-        </div>
-        <div className="w-1/3 border-r-2 p-3 min-h-screen">
-          <h1 className="font-bold text-lg mb-5 uppercase">Done</h1>
-          {DONE.map((issue: any) => (
-            <Ticket issue={issue} key={issue.id} />
-          ))}
-        </div>
+        {Object.keys(issues).map((key) => (
+          <div className="w-1/3 border-r-2 p-3 min-h-screen" key={key}>
+            <h1 className="font-bold text-lg mb-5 uppercase">
+              {formatStatus(key)}
+            </h1>
+            {issues[key].map((issue: any) => (
+              <Ticket issue={issue} key={issue.id} />
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
